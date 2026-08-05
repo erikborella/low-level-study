@@ -19,5 +19,5 @@ _start:
   syscall
 
   mov rax, EXIT_SYSCALL
-  mov rdi, 0
+  xor rdi, rdi
   syscall
