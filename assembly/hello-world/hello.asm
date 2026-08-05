@@ -1,16 +1,14 @@
-bits 64
-
 %define WRITE_SYSCALL 1
 %define EXIT_SYSCALL 60
 
 %define STDOUT 1
 
-global _start
-
 section .data
 message: db 'Hello, world!', 10
 
 section .text
+global _start
+
 _start:
   mov rax, WRITE_SYSCALL
   mov rdi, STDOUT
