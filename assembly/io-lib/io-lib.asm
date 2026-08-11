@@ -11,7 +11,7 @@ global _start
 
 ; rdi = código de saida
 exit:
-  mov RAX, EXIT_SYSCALL
+  mov rax, EXIT_SYSCALL
   syscall
 
 ; ---
@@ -57,9 +57,40 @@ print_string:
   syscall
   ret
 
+; ---
+
+print_char:
+  ; alocamos 1 byte na stack
+  sub rsp, 1
+  mov byte[rsp], dil
+
+  mov rax, WRITE_SYSCALL
+  mov rdi, STDOUT
+  ; Nosso caractere está em *rsp
+  mov rsi, rsp
+  ; Só vamos imprimir 1 caractere
+  mov rdx, 1
+
+  syscall
+
+  ; Desalocamos 1 byte da stack
+  add rsp, 1
+
+  ret
+
+; ---
+
+print_newline:
+  mov rdi, 10
+  call print_char
+
+  ret
+
+; ---
+
 _start:
-  mov rdi, message
-  call print_string
+  mov rdi, 'A'
+  call print_char
 
   xor rdi, rdi
   call exit
