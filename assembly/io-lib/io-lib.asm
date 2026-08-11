@@ -14,6 +14,8 @@ exit:
   mov RAX, EXIT_SYSCALL
   syscall
 
+; ---
+
 ; rdi = string
 ; ret -> rax = tamanho da string
 string_length:
@@ -36,9 +38,28 @@ string_length:
   ; No fim, a posição que encontramos o fim da string será o tamanho dela
   ret
 
-_start:
-  mov rdi, message
+; ---
+
+; rdi = string
+print_string:
+  ; obtemos o tamanho da string, resultado em rax
   call string_length
 
-  mov rdi, rax
+  ; rdx recebe o tamanho da string
+  mov rdx, rax
+  ; rax recebe o identificador da syscall WRITE
+  mov rax, WRITE_SYSCALL
+  ; rsi recebe o ponteiro para a string
+  mov rsi, rdi
+  ; rdi recebe o fd, nesse caso sempre STDOUT
+  mov rdi, STDOUT
+
+  syscall
+  ret
+
+_start:
+  mov rdi, message
+  call print_string
+
+  xor rdi, rdi
   call exit
